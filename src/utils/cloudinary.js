@@ -13,11 +13,11 @@ const uploadToCloudinary = async (filePath) => {
         const respone = await cloudinary.uploader.upload(filePath, {
             resource_type: "auto",
         })
-        console.log('File uploaded to Cloudinary successfully', response.url);
-        return response;
+        console.log('File uploaded to Cloudinary successfully', respone.url);
+        return respone;
 
     } catch (error) {
-        fs.unlilnkSync(filePath);
+        fs.unlinkSync(filePath);
         return null;
         // console.error('Error uploading file to Cloudinary', error);
     }
