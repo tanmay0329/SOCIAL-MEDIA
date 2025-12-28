@@ -119,11 +119,11 @@ const loginUser = asyncHandler(async (req, res) => {
         )
 })
 
-const logoutUser = asyncHandler(async(req, res) => {
+const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set:{
+            $set: {
                 refreshToken: undefined
             }
         },
@@ -148,10 +148,10 @@ const logoutUser = asyncHandler(async(req, res) => {
                 "User logged out Successfully"
             )
         )
-    
+
 })
 
-const refreshAccessToken = asyncHandler(async(req, res) => {
+const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
     if (!incomingRefreshToken) {
@@ -160,24 +160,28 @@ const refreshAccessToken = asyncHandler(async(req, res) => {
 
     try {
         const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET)
-        
+
+        if (typeof decodedToken === "string") {
+            throw new ApiError("Invalid Refresh Token", "401");
+        }
+
         const user = await User.findById(decodedToken?._id)
-        
+
         if (!user) {
             throw new ApiError("Invalid Refresh Token", "401");
         }
-    
-        if(incomingRefreshToken !== user.refreshTokens) {
+
+        if (incomingRefreshToken !== user.refreshTokens) {
             throw new ApiError("Refresh Token is expired or revoked", "401");
         }
-    
-    
+
+
         const { newAccessToken, newRefreshToken } = await generateAccessAndRefreshTokens(user._id);
         const options = {
             httpOnly: true,
             secure: true,
         }
-    
+
         return res
             .status(200)
             .cookie("accessToken", newAccessToken, options)
