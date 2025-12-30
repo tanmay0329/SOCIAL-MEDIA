@@ -124,8 +124,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: {
+                refreshToken: 1
             }
         },
         {
@@ -458,13 +458,6 @@ const getWatchHistory = asyncHandler(async (req, res) => {
     )
 })
 
-const getLikedVideos = asyncHandler(async (req, res) => {
-    
-})
-
-const getSavedVideos = asyncHandler(async (req, res) => {
-    
-})
 
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, updateAccountDetails, updateAvatar, updateCoverImage, getWatchHistory };
+export { registerUser, loginUser, logoutUser, refreshAccessToken, updateAccountDetails, updateAvatar, updateCoverImage, getWatchHistory, changeCurrentUserPassword, getCurrentUser, getUserChannelProfile};
