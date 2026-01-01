@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  // base: '/<REPO_NAME>/', // TODO: Update this with your repository name for GitHub Pages
+  base: '/SOCIAL-MEDIA/',
 })
