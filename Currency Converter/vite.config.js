@@ -9,4 +9,9 @@ export default defineConfig({
     tailwindcss(),
   ],
   base: '/SOCIAL-MEDIA/',
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
+    globals: true,
+  },
 })
